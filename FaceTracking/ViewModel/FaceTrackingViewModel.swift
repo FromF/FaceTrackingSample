@@ -14,7 +14,7 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
     @Published var pointerLocation: CGPoint = CGPoint.zero
     @Published var message: String?
     private let model = FaceTrackingModel()
-    private let moveValue: CGFloat = 100.0
+    private let moveValue: CGFloat = 10.0
     
     func onAppear() {
         model.delegate = self
@@ -29,7 +29,7 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
     
     func setMessage(_ text: String) {
         message = text
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.message = nil
         }
     }
@@ -37,7 +37,6 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
 
 extension FaceTrackingViewModel: FaceTrackingModelDelegate {
     func faceTrackingUp() {
-        debugLog("")
         DispatchQueue.main.async {
             self.setMessage("Up")
             if self.pointerLocation.y > self.moveValue {
@@ -46,7 +45,6 @@ extension FaceTrackingViewModel: FaceTrackingModelDelegate {
         }
     }
     func faceTrackingDown() {
-        debugLog("")
         DispatchQueue.main.async {
             self.setMessage("Down")
             if self.pointerLocation.y + self.moveValue < self.screenSize.height {
@@ -55,7 +53,6 @@ extension FaceTrackingViewModel: FaceTrackingModelDelegate {
         }
     }
     func faceTrackingLeft() {
-        debugLog("")
         DispatchQueue.main.async {
             self.setMessage("Left")
             if self.pointerLocation.x > self.moveValue {
@@ -64,7 +61,6 @@ extension FaceTrackingViewModel: FaceTrackingModelDelegate {
         }
     }
     func faceTrackingRight() {
-        debugLog("")
         DispatchQueue.main.async {
             self.setMessage("Right")
             if self.pointerLocation.x + self.moveValue < self.screenSize.width {

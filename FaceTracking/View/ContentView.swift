@@ -15,7 +15,7 @@ struct ContentView: View {
             ZStack {
                 if let sceneView = viewModel.sceneView {
                     ARSceneView(sceneView: sceneView)
-                        .opacity(0.0)
+                        .opacity(0.3)
                 }
                 
                 if let message = viewModel.message {

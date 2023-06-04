@@ -22,7 +22,13 @@ class FaceTrackingModel: NSObject {
         let configuration = ARFaceTrackingConfiguration()
         return configuration
     }()
-
+    
+    // 各視線移動の閾値
+    private let threshUp: Float = 0.3
+    private let threshDown: Float = 0.4
+    private let threshLeft: Float = 0.3
+    private let threshRight: Float = 0.3
+    
     override init() {
         super.init()
         sceneView.delegate = self
@@ -58,45 +64,66 @@ extension FaceTrackingModel: ARSCNViewDelegate {
             return
         }
         
-        if let lookUpLeft = faceAnchor.blendShapes[.eyeLookUpLeft] as? Float {
-            if lookUpLeft > 0.3 {
+        if let value = faceAnchor.blendShapes[.eyeLookUpLeft] as? Float {
+            if value > threshUp {
+                debugLog("up:\(value)")
                 delegate?.faceTrackingUp()
-            }
-        }
-        if let lookUpRight = faceAnchor.blendShapes[.eyeLookUpRight] as? Float {
-            if lookUpRight > 0.3 {
-                delegate?.faceTrackingDown()
-            }
-        }
-        if let lookDownLeft = faceAnchor.blendShapes[.eyeLookDownLeft] as? Float {
-            if lookDownLeft > 0.3 {
-                delegate?.faceTrackingUp()
-            }
-        }
-        if let lookDownRight = faceAnchor.blendShapes[.eyeLookDownRight] as? Float {
-            if lookDownRight > 0.3 {
-                delegate?.faceTrackingDown()
+                return
             }
         }
         
-        if let lookUpLeft = faceAnchor.blendShapes[.eyeLookInLeft] as? Float {
-            if lookUpLeft > 0.3 {
+        if let value = faceAnchor.blendShapes[.eyeLookDownLeft] as? Float {
+            if value > threshDown {
+                debugLog("down:\(value)")
+                delegate?.faceTrackingDown()
+                return
+            }
+        }
+        if let value = faceAnchor.blendShapes[.eyeLookInLeft] as? Float {
+            if value > threshLeft {
+                debugLog("left:\(value)")
                 delegate?.faceTrackingLeft()
+                return
             }
         }
-        if let lookUpRight = faceAnchor.blendShapes[.eyeLookInRight] as? Float {
-            if lookUpRight > 0.3 {
+        
+        if let value = faceAnchor.blendShapes[.eyeLookOutLeft] as? Float {
+            if value > threshRight {
+                debugLog("right:\(value)")
+                delegate?.faceTrackingRight()
+                return
+            }
+        }
+        
+        if let value = faceAnchor.blendShapes[.eyeLookUpRight] as? Float {
+            if value > threshUp {
+                debugLog("up:\(value)")
+                delegate?.faceTrackingUp()
+                return
+            }
+        }
+        
+        if let value = faceAnchor.blendShapes[.eyeLookDownRight] as? Float {
+            if value > threshDown {
+                debugLog("down:\(value)")
+                delegate?.faceTrackingDown()
+                return
+            }
+        }
+        
+        if let value = faceAnchor.blendShapes[.eyeLookInRight] as? Float {
+            if value > threshLeft {
+                debugLog("left:\(value)")
                 delegate?.faceTrackingLeft()
+                return
             }
         }
-        if let lookDownLeft = faceAnchor.blendShapes[.eyeLookOutLeft] as? Float {
-            if lookDownLeft > 0.3 {
+        
+        if let value = faceAnchor.blendShapes[.eyeLookOutRight] as? Float {
+            if value > threshRight {
+                debugLog("right:\(value)")
                 delegate?.faceTrackingRight()
-            }
-        }
-        if let lookDownRight = faceAnchor.blendShapes[.eyeLookOutRight] as? Float {
-            if lookDownRight > 0.3 {
-                delegate?.faceTrackingRight()
+                return
             }
         }
 
