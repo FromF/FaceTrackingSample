@@ -14,6 +14,7 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
     @Published var pointerLocation: CGPoint = CGPoint.zero
     var centerLocation: CGPoint = CGPoint.zero
     @Published var message: String?
+    @Published var debugText: String?
     private let model = FaceTrackingModel()
     private let moveValue: CGFloat = 10.0
     
@@ -39,6 +40,9 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
 extension FaceTrackingViewModel: FaceTrackingModelDelegate {
     func eyeTracingDebug(x: Int, y: Int, distance: Int) {
         debugLog("\(x),\(y) \(distance)")
+        DispatchQueue.main.async {
+            self.debugText = "(\(x),\(y)) \(distance)cm"
+        }
     }
     
     func eyeTracingScreen(x: CGFloat, y: CGFloat) {

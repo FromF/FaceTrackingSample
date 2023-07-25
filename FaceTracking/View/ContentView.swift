@@ -24,6 +24,16 @@ struct ContentView: View {
                 }
                 // Color(.white)
                 
+                if let debugText = viewModel.debugText {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Text(debugText)
+                            Spacer()
+                        }
+                    }
+                }
+                
                 Image(systemName: "eyes")
                     .resizable()
                     .frame(width: 50, height: 50)
