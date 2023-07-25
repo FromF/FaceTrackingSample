@@ -33,6 +33,7 @@ struct ContentView: View {
                 viewModel.screenSize.width = geometry.size.width
                 viewModel.screenSize.height = geometry.size.height
                 viewModel.pointerLocation = CGPoint(x: viewModel.screenSize.width / 2.0, y: viewModel.screenSize.height / 2.0)
+                viewModel.centerLocation = CGPoint(x: viewModel.screenSize.width / 2.0, y: viewModel.screenSize.height / 2.0)
             }
         }
         .onAppear {

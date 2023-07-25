@@ -12,6 +12,7 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
     @Published var sceneView: ARSCNView?
     @Published var screenSize = CGSize.zero
     @Published var pointerLocation: CGPoint = CGPoint.zero
+    var centerLocation: CGPoint = CGPoint.zero
     @Published var message: String?
     private let model = FaceTrackingModel()
     private let moveValue: CGFloat = 10.0
@@ -36,36 +37,15 @@ class FaceTrackingViewModel: NSObject, ObservableObject {
 }
 
 extension FaceTrackingViewModel: FaceTrackingModelDelegate {
-    func faceTrackingUp() {
-        DispatchQueue.main.async {
-            self.setMessage("Up")
-            if self.pointerLocation.y > self.moveValue {
-                self.pointerLocation.y -= self.moveValue
-            }
-        }
+    func eyeTracingDebug(x: Int, y: Int, distance: Int) {
+        debugLog("\(x),\(y) \(distance)")
     }
-    func faceTrackingDown() {
+    
+    func eyeTracingScreen(x: CGFloat, y: CGFloat) {
+        debugLog("\(x),\(y)")
         DispatchQueue.main.async {
-            self.setMessage("Down")
-            if self.pointerLocation.y + self.moveValue < self.screenSize.height {
-                self.pointerLocation.y += self.moveValue
-            }
-        }
-    }
-    func faceTrackingLeft() {
-        DispatchQueue.main.async {
-            self.setMessage("Left")
-            if self.pointerLocation.x > self.moveValue {
-                self.pointerLocation.x -= self.moveValue
-            }
-        }
-    }
-    func faceTrackingRight() {
-        DispatchQueue.main.async {
-            self.setMessage("Right")
-            if self.pointerLocation.x + self.moveValue < self.screenSize.width {
-                self.pointerLocation.x += self.moveValue
-            }
+            self.pointerLocation.x = self.centerLocation.x + x
+            self.pointerLocation.y = self.centerLocation.y + y
         }
     }
 }
